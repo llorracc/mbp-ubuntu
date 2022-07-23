@@ -30,16 +30,16 @@ for file in $(find "${CHROOT_PATH}"/boot -maxdepth 1 -type f -name 'vmlinuz-*' |
   cat <<EOF >> "${IMAGE_PATH}"/isolinux/grub.cfg
 submenu "Ubuntu, with Linux $file" {
 
-  menuentry "Try Ubuntu FS without installing" {
-     linux /casper/vmlinuz-$file file=/cdrom/preseed/mbp.seed boot=casper ro efi=noruntime pcie_ports=compat ---
+  menuentry "Try Ubuntu FS without installing (no nvme)" {
+     linux /casper/vmlinuz-$file file=/cdrom/preseed/mbp.seed boot=casper ro efi=noruntime pcie_ports=compat initcall_blacklist=nvme_init ---
      initrd /casper/initrd-$file
   }
   menuentry "Install Ubuntu FS" {
-     linux /casper/vmlinuz-$file preseed/file=/cdrom/preseed/mbp.seed boot=casper only-ubiquity efi=noruntime pcie_ports=compat ---
+     linux /casper/vmlinuz-$file preseed/file=/cdrom/preseed/mbp.seed boot=casper only-ubiquity efi=noruntime pcie_ports=compat initcall_blacklist=nvme_init ---
      initrd /casper/initrd-$file
   }
   menuentry "Check disc for defects" {
-     linux /casper/vmlinuz-$file boot=casper integrity-check efi=noruntime enforcing=0 efi=noruntime pcie_ports=compat ---
+     linux /casper/vmlinuz-$file boot=casper integrity-check efi=noruntime enforcing=0 efi=noruntime pcie_ports=compat initcall_blacklist=nvme_init ---
      initrd /casper/initrd-$file
   }
 }
